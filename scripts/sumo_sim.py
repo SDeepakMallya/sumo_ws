@@ -41,20 +41,7 @@ class TraciSim:
         self.updated[robot_id] = True 
         self.update = True
 
-        # print traci.vehicle.getIDList()
-        
-        # vehicles = traci.vehicle.getIDList()
-        # if str(robot_id) not in vehicles:
-        #     print route
-        #     traci.route.add(routeID = str(robot_id), edges = route)
-        #     traci.vehicle.add(vehID = str(robot_id),routeID = str(robot_id), typeID = "type1")
-        # else:
-        #     prev_route = traci.vehicle.getRoute(str(robot_id))
-        #     route.insert(0, prev_route[-1])
-        #     traci.vehicle.setRoute(vehID = str(robot_id), edgeList = route)
-        # traci.vehicle.setStop(vehID = str(robot_id), edgeID = route[-1], pos = -1.0, duration = 200)
-
-def main(argv):
+ def main(argv):
 
     graph_name = argv[0]
     num_vehicles = int(argv[1])
@@ -62,6 +49,7 @@ def main(argv):
     os.system('sleep 5')
     dirname = rospkg.RosPack().get_path('sumo_ws')
     sumo_startup = ['sumo-gui', '-c', dirname +'/graph_sumo/{}.sumocfg'.format(graph_name)]
+    print 'Click Play button only on ensuring that the algorithm is fully functional'
     traci.start(sumo_startup)
     #Click Play Button in the GUI, if GUI
     
@@ -81,7 +69,7 @@ def main(argv):
                             traci.vehicle.resume(str(i))
                             traci.vehicle.setRoute(vehID = str(i), edgeList = t.routes[i])
                     stop_pos = traci.lane.getLength(t.routes[i][-1] + '_0')
-                    traci.vehicle.setStop(vehID = str(i), edgeID = t.routes[i][-1], pos = stop_pos, duration = 200)
+                    traci.vehicle.setStop(vehID = str(i), edgeID = t.routes[i][-1], pos = stop_pos, duration = 2000)
                 t.updated[i] = False
             t.update = False
         
@@ -104,7 +92,7 @@ def main(argv):
             if len(msg.node_id) > 0:
                 t.pub.publish(msg)
 
-        print traci.vehicle.getIDCount()
+        print 'Num_vehicles', traci.vehicle.getIDCount()
         traci.simulationStep()
 
 if __name__ == '__main__':
