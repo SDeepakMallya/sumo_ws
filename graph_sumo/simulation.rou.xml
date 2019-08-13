@@ -1,0 +1,4 @@
+    <routes>
+        <vType id="type1" accel="1.0" decel="5.0" length="2.0" maxSpeed="10" sigma="0.0" />
+    </routes>
+
