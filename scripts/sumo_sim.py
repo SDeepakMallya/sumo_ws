@@ -41,7 +41,7 @@ class TraciSim:
         self.updated[robot_id] = True 
         self.update = True
 
- def main(argv):
+def main(argv):
 
     graph_name = argv[0]
     num_vehicles = int(argv[1])
@@ -84,7 +84,12 @@ class TraciSim:
                 print last_edge
                 if last_edge.find(':') == -1:
                     last_node = int(last_edge[:last_edge.find('to')])
-                    if traci.vehicle.isStopped(str(i)) or t.last_nodes[i] != last_node:
+                    if traci.vehicle.isStopped(str(i)):
+                        stop_node = int(last_edge[last_edge.find('to') + 2:])
+                        msg.node_id.append(stop_node)
+                        msg.robot_id.append(i)
+                        t.last_nodes[i] = stop_node
+                    elif t.last_nodes[i] != last_node:
                         msg.node_id.append(last_node)
                         msg.robot_id.append(i)
                         t.last_nodes[i] = last_node
